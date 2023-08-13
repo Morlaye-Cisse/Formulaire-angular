@@ -27,4 +27,12 @@ export class Register2Component implements OnInit {
       
     }
      
+    public RemplirFormulair(){
+      this.registerForm.setValue({
+        firstName : "Morlaye",
+        lastName : "Cisse",
+        email : "mor@g.com",
+        sendCatalog : false
+      })
+    }
 }

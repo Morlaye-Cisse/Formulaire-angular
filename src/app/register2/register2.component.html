@@ -106,10 +106,17 @@
             </div>
 
             <div class="text-right mt-2">
-                <button class="btn btn-info" type="submit">
+                <button class="btn btn-outline-info mr-2" (click)="RemplirFormulair()">
+                    Remplir les champs par defaut
+                </button>
+                <button [ngClass]="{'bg-white' : !registerForm.valid}" 
+                        class="btn btn-info" type="submit" 
+                        [disabled]="!registerForm.valid">
                     Sauvegarder
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<p>{{ registerForm.value | json}}</p>
