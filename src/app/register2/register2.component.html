@@ -11,15 +11,13 @@
                     <label >Nom</label>
                     <input type="text" class="form-control" placeholder="Nom"  
                           formControlName="firstName"
-                          required
-                          minlength="3"
                           [ngClass]="{'is-invalid':registerForm.get('firstName')?.touched && !registerForm.get('firstName')?.valid }">
                           <div class="invalid-feedback">
                             <span *ngIf="registerForm.get('firstName')?.errors?.['required']">
                                 Vous devez saisir Nom
                             </span>
                             <span *ngIf="registerForm.get('firstName')?.errors?.['minlength']">
-                                minimum 3 caracteres
+                                minimum 4 caracteres
                             </span>
                           </div>
                 </div>
@@ -27,8 +25,6 @@
                     <label >Prenom</label>
                     <input type="text" class="form-control" placeholder="Prenom" 
                          formControlName="lastName"
-                         required
-                         maxlength="20"
                          [ngClass]="{'is-invalid':registerForm.get('lastName')?.touched && !registerForm.get('lastName')?.valid }">
                          <div class="invalid-feedback">
                             <span  *ngIf="registerForm.get('lastName')?.errors?.['required']">
@@ -45,20 +41,61 @@
                     <label >E-mail</label>
                     <input type="email" class="form-control" placeholder="E-mail" 
                            formControlName="email"
-                           required
-                           email
                            [ngClass]="{'is-invalid':registerForm.get('email')?.touched && !registerForm.get('email')?.valid }">
+
                            <div class="invalid-feedback">
                             <span *ngIf="registerForm.get('email')?.errors?.['required']">
                                 Vous devez saisir votre email
                             </span>
-                            <span  *ngIf="registerForm.get('lastName')?.errors?.['email']">
+                            <span  *ngIf="registerForm.get('email')?.errors?.['email']">
                                 Email est invalide
                             </span>
                            </div>
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="phoneId">Telephone</label>
+                    <input type="tel" class="form-control"
+                     placeholder="Numero de tel"
+                     formControlName="phone"
+                     [ngClass]="{'is-invalid': !registerForm.get('phone')?.valid}">
+
+                     <div class="invalid-feedback">
+                        <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+                            Veuillez entrer votre numero de telephone
+                        </span>
+                     </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="">Recevoir les notification</label>
+                    <div class="col-md-8">
+                        <div class="fom-check form-check-inline">
+                            <label for="" class="form-check-label">
+                                <input 
+                                type="radio" 
+                                class="form-check-input"
+                                formControlName="notification"
+                                value="email"
+                                (click)="setNotificationSetting('email')"
+                                >
+                                E-mail
+                            </label>
+                        </div>
+
+                        <div class="fom-check form-check-inline">
+                            <label for="" class="form-check-label">
+                                <input type="radio" class="form-check-input"
+                                formControlName="notification"
+                                value="texte"
+                                (click)="setNotificationSetting('texte')">
+                                Texte
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="form-check mt-4 pt-3">

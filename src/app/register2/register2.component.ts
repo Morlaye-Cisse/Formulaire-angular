@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from './User';
 
 
@@ -13,12 +13,16 @@ export class Register2Component implements OnInit {
 
   public registerForm !: FormGroup
 
+  constructor(private fb:FormBuilder){}
+  
   ngOnInit(): void {
-    this.registerForm = new FormGroup({
-      firstName :new FormControl(),
-      lastName : new FormControl(),
-      email : new FormControl(),
-      sendCatalog : new FormControl(true)
+    this.registerForm = this.fb.group({
+      firstName : ['', [Validators.required,Validators.minLength(4)]],
+      lastName : ['', [Validators.required, Validators.maxLength(40)]],
+      email : ['', [Validators.required, Validators.email]],
+      phone : ['',Validators.required],
+      notification : 'email',
+      sendCatalog : true
     });
   }
 
@@ -28,11 +32,24 @@ export class Register2Component implements OnInit {
     }
      
     public RemplirFormulair(){
-      this.registerForm.setValue({
+      this.registerForm.patchValue({
         firstName : "Morlaye",
         lastName : "Cisse",
         email : "mor@g.com",
         sendCatalog : false
       })
+    }
+
+    public setNotificationSetting(method:String){
+          const phoneControl =this.registerForm.get('phone');
+
+          if(method === 'texte')
+          {
+            phoneControl?.setValidators(Validators.required);
+          } else {
+            phoneControl?.clearValidators();
+          }
+
+          phoneControl?.updateValueAndValidity();
     }
 }
