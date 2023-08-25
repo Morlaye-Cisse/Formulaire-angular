@@ -22,6 +22,24 @@ function ratingRangerValidator(min: number,max:number){
   };
 } 
 
+//fonction de gestion de la validation croisee
+function emailMatcher(c:AbstractControl):{ [key: string]:boolean} | null {
+
+  const emailControl = c.get('email');
+  const emaiConfirmControl= c.get('confirmEmailId');
+
+  //verifier que rien n'est saissie
+  if(emailControl?.pristine || emaiConfirmControl?.pristine){
+    return null;
+  }
+  //verifier que les deux email correspond
+  if(emailControl?.value === emaiConfirmControl?.value){
+    return null;
+  }
+
+  return {'match' : true};
+}
+
 @Component({
   selector: 'app-register2',
   templateUrl: './register2.component.html',
@@ -38,7 +56,10 @@ export class Register2Component implements OnInit {
     this.registerForm = this.fb.group({
       firstName : ['', [Validators.required,Validators.minLength(4)]],
       lastName : ['', [Validators.required, Validators.maxLength(40)]],
+      emailGroup : this.fb.group({
       email : ['', [Validators.required, Validators.email]],
+      confirmEmailId : ['', [Validators.required, Validators.email]]
+      }, { validators : emailMatcher}),
       phone : ['',Validators.required],
       rating: [null,ratingRangerValidator(1,5)],
       notification : 'email',
