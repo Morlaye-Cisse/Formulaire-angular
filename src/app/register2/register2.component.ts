@@ -1,7 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { User } from './User';
 
+//creation de validdateur personnaliger sans parametre
+// function ratingRangerValidator(c:AbstractControl):{ [key: string]:boolean} | null{
+//      //contion pour returner une erreur 
+//      if(c.value !== null && (isNaN(c.value) || (c.value < 1 || c.value > 5))){
+//         return {"rangeError": true}
+//      }
+
+//      return null;
+// }
+//creation de validdateur personnaliger avec parametre
+function ratingRangerValidator(min: number,max:number){
+  return (c:AbstractControl):{ [key: string]:boolean} | null => {
+    //condition pour returner une erreur 
+    if(c.value !== null && (isNaN(c.value) || (c.value < min || c.value > max))){
+       return {"rangeError": true}
+    }
+    return null;
+  };
+} 
 
 @Component({
   selector: 'app-register2',
@@ -21,9 +40,11 @@ export class Register2Component implements OnInit {
       lastName : ['', [Validators.required, Validators.maxLength(40)]],
       email : ['', [Validators.required, Validators.email]],
       phone : ['',Validators.required],
+      rating: [null,ratingRangerValidator(1,5)],
       notification : 'email',
       sendCatalog : true
     });
+
   }
 
   public saveData()
@@ -32,6 +53,7 @@ export class Register2Component implements OnInit {
     }
      
     public RemplirFormulair(){
+      //remplire les champ par defaut
       this.registerForm.patchValue({
         firstName : "Morlaye",
         lastName : "Cisse",
