@@ -42,15 +42,10 @@
                     <label >E-mail</label>
                     <input type="email" class="form-control" placeholder="E-mail" 
                            formControlName="email"
-                           [ngClass]="{'is-invalid': registerForm.get('emailGroup')?.errors || (registerForm.get('emailGroup.email')?.touched && !registerForm.get('emailGroup.email')?.valid) }">
+                           [ngClass]="{'is-invalid': errorMsg }">
 
                            <div class="invalid-feedback">
-                            <span *ngIf="registerForm.get('emailGroup.email')?.errors?.['required']">
-                                Vous devez saisir votre email
-                            </span>
-                            <span  *ngIf="registerForm.get('emailGroup.email')?.errors?.['email']">
-                                Email est invalide
-                            </span>
+                                {{ errorMsg }}
                            </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -58,7 +53,7 @@
                     <input type="email" class="form-control" 
                            placeholder="Confirmer E-mail" 
                            formControlName="confirmEmailId"
-                           [ngClass]="{'is-invalid': registerForm.get('emailGroup')?.errors ||(registerForm.get('emailGroup.confirmEmailId')?.touched && !registerForm.get('emailGroup.confirmEmailId')?.valid) }">
+                           [ngClass]="{'is-invalid': errorMsg }">
 
                            <div class="invalid-feedback">
                             <span *ngIf="registerForm.get('emailGroup.confirmEmailId')?.errors?.['required']">
@@ -98,9 +93,9 @@
                                 class="form-check-input"
                                 formControlName="notification"
                                 value="email"
-                                (click)="setNotificationSetting('email')"
                                 >
                                 E-mail
+                                <!-- (click)="setNotificationSetting('email')" -->
                             </label>
                         </div>
 
@@ -109,8 +104,9 @@
                                 <input type="radio" class="form-check-input"
                                 formControlName="notification"
                                 value="texte"
-                                (click)="setNotificationSetting('texte')">
+                                >
                                 Texte
+                                <!-- (click)="setNotificationSetting('texte')" -->
                             </label>
                         </div>
                     </div>

@@ -40,6 +40,7 @@ function emailMatcher(c:AbstractControl):{ [key: string]:boolean} | null {
   return {'match' : true};
 }
 
+
 @Component({
   selector: 'app-register2',
   templateUrl: './register2.component.html',
@@ -49,6 +50,13 @@ export class Register2Component implements OnInit {
   public user: User = new User();
 
   public registerForm !: FormGroup
+
+  public errorMsg!:string;
+
+  private validationErrorsMessages ={
+    required : 'Entrez votre E-Mail',
+    email : 'L\'E-Mail n\'est pas valide'
+  }
 
   constructor(private fb:FormBuilder){}
   
@@ -65,6 +73,15 @@ export class Register2Component implements OnInit {
       notification : 'email',
       sendCatalog : true
     });
+
+    this.registerForm.get("notification")?.valueChanges.subscribe(v =>{
+       this.setNotificationSetting(v)
+    });
+    //recuperer l'email
+    const emailControl = this.registerForm.get("emailGroup.email");
+    emailControl?.valueChanges.subscribe(value =>{
+      this.setMessage(emailControl);
+    })
 
   }
 
@@ -94,5 +111,22 @@ export class Register2Component implements OnInit {
           }
 
           phoneControl?.updateValueAndValidity();
+    }
+
+    private setMessage(val: AbstractControl){
+      this.errorMsg='';
+
+      if((val.touched || val.dirty) && val.errors){
+        console.log(Object.keys(val.errors));
+        this.errorMsg = Object.keys(val.errors).map(
+          (key) =>{
+            if(key=='email')
+                return this.validationErrorsMessages.email;
+            else
+                return this.validationErrorsMessages.required;
+          }
+        ).join(' ');
+      }
+      console.log(this.errorMsg);
     }
 }
